@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../components/Header'
 import { Card, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { fetchProducts } from '../redux/slices/productSlice'
 
 const Home = () => {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(fetchProducts())
+  },[])
   return (
    <>
       <Header insideHome={true}/>

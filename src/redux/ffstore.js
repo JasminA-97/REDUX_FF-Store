@@ -7,4 +7,4 @@ const ffStore = configureStore({
     }
 
 })
-export default ffStore
+export default ffStore   
