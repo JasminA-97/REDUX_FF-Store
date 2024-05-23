@@ -2,28 +2,47 @@ import React from 'react'
 import Header from '../components/Header'
 import { Card, Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeWishlistItem } from '../redux/slices/wishlistSlice'
+
 
 const Wishlist = () => {
+  const ourWishlist = useSelector(state=>state.wishlistReducer) 
+  const dispatch = useDispatch()
   return (
 <>
     <Header/>
     <div style={{marginTop:'150px'}} className="container-fluid">
-      <h3 className="text-danger">Your Wishlist</h3>
-      <Row className='my-5'>
-        <Col className="mb-5 me-2" sm={12} md={6} lg={4} xl={3}>
-          <Card className='shadow rounded' style={{ width: '18rem' }}>
-            <Card.Img height={'180px'} variant="top" src="" />
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <div className="d-flex justify-content-around mt-3">
-                <button className='btn'><i className="fa-solid fa-heart-circle-xmark text-danger"></i></button>
-                <button className='btn'><i className="fa-solid fa-cart-plus text-success"></i></button>
-              </div>
-                    
-            </Card.Body>
-         </Card>
-        </Col>
-      </Row>
+    {
+      ourWishlist?.length > 0?
+      <div>
+        <h3 className="text-danger">Your Wishlist</h3>
+        <Row className='my-5'>
+            {
+              ourWishlist?.map(product=> (
+              <Col key={product?.id} className="mb-5 " sm={12} md={6} lg={4} xl={3}>
+                <Card className='shadow rounded' style={{ width: '18rem' }}>
+                  <Card.Img height={'180px'} variant="top" src={product?.thumbnail} />
+                  <Card.Body>
+                    <Card.Title>{product?.title.slice(0,20)}...</Card.Title>
+                    <div className="d-flex justify-content-around mt-3">
+                      <button onClick={()=>dispatch(removeWishlistItem(product?.id))} className='btn'><i className="fa-solid fa-heart-circle-xmark text-danger"></i></button>
+                      <button className='btn'><i className="fa-solid fa-cart-plus text-success"></i></button>
+                    </div>
+                          
+                  </Card.Body>
+                </Card>
+              </Col>
+              ))
+            }
+        </Row>
+      </div>
+      :
+      <div style={{height:'60vh'}} className="d-flex justify-content-center align-items-center flex-column ">
+        <img src="https://static.vecteezy.com/system/resources/previews/008/515/488/large_2x/empty-cart-flat-illustration-concept-vector.jpg" height={'400px'} alt="" />
+        <h3 className="text-danger">Your Wishlist is Empty!!!</h3>
+      </div>
+    }
     </div>
 </>
   )
