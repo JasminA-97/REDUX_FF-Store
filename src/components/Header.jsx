@@ -7,7 +7,8 @@ import { searchProduct } from '../redux/slices/productSlice';
 
 const Header = ({insideHome}) => {
   const dispatch = useDispatch()    
-  const yourWishlist = useSelector(state=>state.wishlistReducer)                                         
+  const yourWishlist = useSelector(state=>state.wishlistReducer)    
+  const yourCart = useSelector(state=>state.cartReducer)                                     
   return (
 
    
@@ -22,7 +23,7 @@ const Header = ({insideHome}) => {
                 <Nav.Link><input onChange={e=>{dispatch(searchProduct(e.target.value.toLowerCase()))}} type='text' placeholder='Search products Here!!!' style={{width:'500px'}} className=' rounded p-1'></input></Nav.Link>
             }
             <Nav.Link ><Link to={'/wishlist'} className='fw-bolder' style={{color:'white',textDecoration:'none'}}><i class="fa-solid fa-heart text-danger"></i>Wishlist<Badge>{yourWishlist?.length}</Badge></Link></Nav.Link>
-            <Nav.Link ><Link to={'/cart'} className='fw-bolder' style={{color:'white',textDecoration:'none'}}><i class="fa-solid fa-cart-plus text-success"></i>Cart<Badge>5</Badge></Link></Nav.Link>
+            <Nav.Link ><Link to={'/cart'} className='fw-bolder' style={{color:'white',textDecoration:'none'}}><i class="fa-solid fa-cart-plus text-success"></i>Cart<Badge>{yourCart?.length}</Badge></Link></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

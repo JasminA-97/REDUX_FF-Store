@@ -1,16 +1,31 @@
 import React from 'react'
 import Header from '../components/Header'
 import { Card, Col, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeWishlistItem } from '../redux/slices/wishlistSlice'
+import { addToCart } from '../redux/slices/cartSlice'
+
 
 
 const Wishlist = () => {
   const ourWishlist = useSelector(state=>state.wishlistReducer) 
   const dispatch = useDispatch()
+  const ourCart = useSelector(state=>state.cartReducer)
+
+  const handleCart = (product) =>{
+    const existingProduct = ourCart?.find(item=>item.id==product.id)
+        if(existingProduct){
+            dispatch(addToCart(product))
+            dispatch(removeWishlistItem(product.id))
+            alert("product quantity is incrementing!!!")
+         }else{
+          dispatch(addToCart(product))
+          dispatch(removeWishlistItem(product.id))
+         }
+     }
+  
   return (
-<>
+  <>
     <Header/>
     <div style={{marginTop:'150px'}} className="container-fluid">
     {
@@ -27,7 +42,7 @@ const Wishlist = () => {
                     <Card.Title>{product?.title.slice(0,20)}...</Card.Title>
                     <div className="d-flex justify-content-around mt-3">
                       <button onClick={()=>dispatch(removeWishlistItem(product?.id))} className='btn'><i className="fa-solid fa-heart-circle-xmark text-danger"></i></button>
-                      <button className='btn'><i className="fa-solid fa-cart-plus text-success"></i></button>
+                      <button onClick={()=>handleCart(product)} className='btn'><i className="fa-solid fa-cart-plus text-success"></i></button>
                     </div>
                           
                   </Card.Body>
